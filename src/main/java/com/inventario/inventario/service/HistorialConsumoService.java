@@ -2,9 +2,10 @@ package com.inventario.inventario.service;
 
 import com.inventario.inventario.model.HistorialConsumo;
 import com.inventario.inventario.repository.HistorialConsumoRepository;
+import com.inventario.inventario.dto.ReporteFinancieroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class HistorialConsumoService {
         return historialRepo.findAll();
     }
 
-    public com.inventario.inventario.dto.ReporteFinancieroDTO obtenerResumenFinanciero(int mes, int anio) {
+    public ReporteFinancieroDTO obtenerResumenFinanciero(int mes, int anio) {
         // 1. Calcular Gasto del Mes Actual
         LocalDate inicioMes = LocalDate.of(anio, mes, 1);
         LocalDate finMes = inicioMes.withDayOfMonth(inicioMes.lengthOfMonth());
@@ -61,6 +62,6 @@ public class HistorialConsumoService {
             }
         }
 
-        return new com.inventario.inventario.dto.ReporteFinancieroDTO(gastoMes, promedio);
+        return new ReporteFinancieroDTO(gastoMes, promedio);
     }
 }
