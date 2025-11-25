@@ -5,6 +5,7 @@ import com.inventario.inventario.service.HistorialConsumoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.inventario.inventario.dto.ReporteFinancieroDTO;
 
 @RestController
 @RequestMapping("/api/reportes")
@@ -26,5 +27,12 @@ public class ReporteController {
     @GetMapping("/producto/{id}")
     public List<HistorialConsumo> obtenerHistorialProducto(@PathVariable Long id) {
         return historialService.obtenerHistorialPorProducto(id);
+    }
+
+    @GetMapping("/financiero")
+    public ReporteFinancieroDTO obtenerResumenFinanciero(
+            @RequestParam int mes, 
+            @RequestParam int anio) {
+        return historialService.obtenerResumenFinanciero(mes, anio);
     }
 }

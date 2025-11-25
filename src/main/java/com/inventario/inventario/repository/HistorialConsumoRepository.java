@@ -16,4 +16,20 @@ public interface HistorialConsumoRepository extends JpaRepository<HistorialConsu
     // Para ver el historial de un producto específico (Ej: ¿Cuándo me acabé las leches?)
     // Navegamos: Historial -> Inventario -> Producto -> ID
     List<HistorialConsumo> findByInventarioProductoId(Long productoId);
+
+    // Sumar (Cantidad Consumida * Precio Unitario del Inventario) en un rango de fechas
+    @Query("SELECT COALESCE(SUM(h.cantidadConsumida * i.precioUnitario), 0) " +
+           "FROM HistorialConsumo h " +
+           "JOIN h.inventario i " +
+           "WHERE h.fechaConsumo BETWEEN :inicio AND :fin")
+    BigDecimal calcularGastoEnRango(LocalDate inicio, LocalDate fin);
+
+    // Sumar Gasto TOTAL Histórico (Desde el principio de los tiempos)
+    @Query("SELECT COALESCE(SUM(h.cantidadConsumida * i.precioUnitario), 0) " +
+           "FROM HistorialConsumo h JOIN h.inventario i")
+    BigDecimal calcularGastoTotalHistorico();
+    
+    // Obtener la fecha del primer consumo (Para saber cuántos meses llevamos)
+    @Query("SELECT MIN(h.fechaConsumo) FROM HistorialConsumo h")
+    LocalDate obtenerPrimeraFechaConsumo();
 }
